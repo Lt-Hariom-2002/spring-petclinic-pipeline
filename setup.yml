@@ -1,12 +1,48 @@
-- name: Install maven, mysql, tomcat
+---
+- name: Install Java 17 and Maven on all hosts
   hosts: all
   become: yes
   tasks:
-    - name: Update apt package cache
+
+    - name: Update apt package index
       apt:
         update_cache: yes
 
-  roles:
-    - maven
-    - mysql
-    - tomcat
+    - name: Install dependencies
+      apt:
+        name: 
+          - wget
+          - curl
+          - gnupg
+        state: present
+
+    - name: Add Java 17 repository
+      apt_repository:
+        repo: ppa:openjdk-r/ppa
+        state: present
+
+    - name: Install OpenJDK 17
+      apt:
+        name: openjdk-17-jdk
+        state: present
+
+    - name: Verify Java version
+      command: java -version
+      register: java_version
+      ignore_errors: yes
+
+    - debug:
+        var: java_version.stderr_lines
+
+    - name: Install Maven
+      apt:
+        name: maven
+        state: present
+
+    - name: Verify Maven version
+      command: mvn -version
+      register: maven_version
+      ignore_errors: yes
+
+    - debug:
+        var: maven_version.stdout_lines
