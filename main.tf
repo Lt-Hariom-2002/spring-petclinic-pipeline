@@ -26,18 +26,6 @@ resource "aws_instance" "app_server" {
   }
 }
 
-# Tomcat Server
-resource "aws_instance" "tomcat_server" {
-  ami             = "ami-0360c520857e3138f"
-  instance_type   = "t3.micro"
-  security_groups = ["launch-wizard-1"]
-  key_name        = "hariom"
-
-  tags = {
-    Name = "tomcat-server"
-  }
-}
-
 # Outputs
 output "artifact_server_ip" {
   value = aws_instance.artifact_server.public_ip
@@ -45,8 +33,4 @@ output "artifact_server_ip" {
 
 output "app_server_ip" {
   value = aws_instance.app_server.public_ip
-}
-
-output "tomcat_server_ip" {
-  value = aws_instance.tomcat_server.public_ip
 }
