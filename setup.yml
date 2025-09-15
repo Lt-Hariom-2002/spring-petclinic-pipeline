@@ -1,6 +1,6 @@
 ---
 - name: Install Java 17 and Maven
-  hosts: all
+  hosts: artifact_server,app_server
   become: yes
   tasks:
     - name: Update apt cache and install packages
